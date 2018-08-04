@@ -10,4 +10,6 @@ const images = {
   blastoise: "https://upload.wikimedia.org/wikipedia/en/2/28/Pok%C3%A9mon_Bulbasaur_art.png",
 }
 
-export default images;
+const url = 'http://localhost:3001';
+
+export { images, url };

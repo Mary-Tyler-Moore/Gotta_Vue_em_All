@@ -15,11 +15,13 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "mongoose": "^5.2.6",
     "nodemon": "^1.18.3",
-    "nuxt": "^1.0.0"
+    "nuxt": "^1.0.0",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
