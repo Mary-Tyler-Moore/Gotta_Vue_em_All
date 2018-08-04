@@ -21,3 +21,11 @@ $ npm run generate
 
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
 
+#HOW TO START THIS APP
+- npm install || yarn
+- start up mongod
+- npm run dev || yarn dev
+- npm run server || yarn server
+- OPTIONAL (seeds DB with some data):
+  - rename a "example.config.js" to "config.js" at the root directory.
+  - npm run seed || yarn seed
