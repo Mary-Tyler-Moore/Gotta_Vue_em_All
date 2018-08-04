@@ -1,5 +1,5 @@
 <template>
-  <div id="pokemonDisplay">
+  <div id="pokemonDisplay" class="flexCenter flexColumn">
     <img :src="img" alt="pokemon image"/>
     <slot />
   </div>
@@ -12,10 +12,5 @@
 </script>
 
 <style scoped>
-  #pokemonDisplay {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
+
 </style>

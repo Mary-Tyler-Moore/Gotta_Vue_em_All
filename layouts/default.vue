@@ -31,5 +31,19 @@ html {
   margin: 0;
 }
 
+.page {
+  height: 95vh;
+}
+
+.flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flexColumn {
+  flex-direction: column;
+}
+
 </style>
 
