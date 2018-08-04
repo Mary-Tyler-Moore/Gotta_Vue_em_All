@@ -1,12 +1,20 @@
 <template>
   <div id="wild" class="flexCenter page flexColumn">
-    <transition name="pokemonDisplay" mode="out-in">
-      <div key="1" v-if="!swapDisplay" @click="attemptCatch" class="flexCenter flexColumn">
+    <transition name="scale" mode="out-in">
+      <div key="1" v-if="!swapDisplay" @click="attemptCatch" class="flexCenter flexColumn pokemonDisplay">
         <PokemonDisplay 
         :img="this.$store.state.pokemon[index].img"/>
         <div>{{ this.$store.state.pokemon[index].name }}</div>
       </div>
-      <div key="2" v-else class="pokeball" @click="toggle">
+      <div key="2" v-else class="pokeball flexCenter" @click="toggle">
+        <div class="pokeball2 flexCenter">
+          <div class="pokeLine flexCenter">
+            <div class="pokeButton flexCenter">
+              <div class="innerPokeButton">
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </transition>
   </div>
@@ -54,11 +62,11 @@
     background-size: cover;
   }
 
-  .pokemonDisplay-enter-active, .pokemonDisplay-leave-active {
+  .scale-enter-active, .scale-leave-active {
     transition: transform 1s;
   }
 
-  .pokemonDisplay-enter, .pokemonDisplay-leave-to {
+  .scale-enter, .scale-leave-to {
     transform: scale(0.1);
   }
 
@@ -68,5 +76,44 @@
     border-radius: 100%;
     height: 100px;
     width: 100px;
+    animation: ballshake 1s alternate infinite;
   }
+
+  .pokeball2 {
+    background-color: red;
+    border-radius: 100%;
+    height: 100%;
+    width: 100%;
+  }
+
+  .pokeLine {
+    background-color: white;
+    border: 1px solid black;
+    width: 100%;
+    height: 15%;
+    transform:rotate(-10deg); 
+  }
+
+  .pokeButton {
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 100%;
+    height: 220%;
+    width: 30%;
+  }
+
+  .innerPokeButton {
+    border: 1px solid black;
+    border-radius: 100%;
+    height: 90%;
+    width: 90%;
+  }
+
+  @keyframes ballshake {
+    100% { 
+      -webkit-transform: rotate(360deg); 
+      transform:rotate(20deg); 
+    }
+  }
+
 </style>
