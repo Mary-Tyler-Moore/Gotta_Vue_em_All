@@ -6,13 +6,13 @@
 
 <script>
 import pokemonDisplay from '../components/PokemonDisplay';
-import store from '../store/store.js';
+import { store } from '../store/store.js';
 
 export default {
   name: 'home',
   store,
-  beforeMount: () => {
-    console.log('this is beforeMount in home')
+  beforeMount: function() {
+    this.$store.commit('fetchAllPokemon');
   },
   components: {
     pokemonDisplay,
@@ -27,5 +27,5 @@ export default {
   }
 }
 
-
 </script>
+
