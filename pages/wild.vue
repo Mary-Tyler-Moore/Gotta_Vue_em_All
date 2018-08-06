@@ -34,10 +34,6 @@
     components: {
       PokemonDisplay,
     },
-    created() {
-      console.log(this.storeLength);
-      console.log(this.randomIndex);
-    },
     store,
     data() {
       return {
