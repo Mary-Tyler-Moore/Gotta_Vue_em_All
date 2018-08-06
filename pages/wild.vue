@@ -6,10 +6,10 @@
     <transition name="scale" mode="out-in">
       <div key="1" v-if="!swapDisplay" @click="attemptCatch" class="flexCenter flexColumn pokemonDisplay">
         <PokemonDisplay 
-        :img="this.$store.state.pokemon[index].img"/>
-        <div>{{ this.$store.state.pokemon[index].name }}</div>
+        :img="this.$store.state.pokemon[randomId].img"/>
+        <div>{{ this.$store.state.pokemon[randomId].name }}</div>
       </div>
-      <div key="2" v-else class="pokeball flexCenter" @click="toggle">
+      <div key="2" v-else class="pokeball flexCenter">
         <div class="pokeball2 flexCenter">
           <div class="pokeLine flexCenter">
             <div class="pokeButton flexCenter">
@@ -37,10 +37,15 @@
     store,
     data() {
       return {
-        index: Math.floor(Math.random() * Object.keys(this.$store.state.pokemon).length),
         swapDisplay: false,
         message: null,
-        storeLength: Object.keys(this.$store.state.pokemon).length,
+        pokemonIDs: Object.keys(this.$store.state.pokemon),
+        randomNum: Math.floor(Math.random() * Object.keys(this.$store.state.pokemon).length),
+      }
+    },
+    computed: {
+      randomId(){
+        return this.pokemonIDs[this.randomNum];
       }
     },
     methods: {
@@ -48,14 +53,12 @@
         let chance = Math.random() * 1;
         if (chance > 0.60) {
           axios
-            .put(`${url}/api/caught`, { pokemonId: this.$store.state.pokemon[this.index].id })
+            .put(`${url}/api/caught`, { pokemonId: this.$store.state.pokemon[this.randomId].id })
             .then(() => {
-              console.log('success')
               this.updateMessage(1);
             })
             .catch(err => console.error(err));
         } else {
-          console.log('failed');
           this.updateMessage();
         }
         
@@ -65,7 +68,7 @@
         this.swapDisplay = !this.swapDisplay;
       },
       updateIndex() {
-        this.index = Math.floor(Math.random() * this.storeLength);
+        this.randomNum = Math.floor(Math.random() * Object.keys(this.$store.state.pokemon).length);
       },
       updateMessage(success) {
         let msg = '';
