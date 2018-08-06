@@ -7,10 +7,16 @@
 
 <script>
 import Menu from '../components/Menu';
+import { store } from '../store/store.js';
+
 export default {
   components: {
     Menu
-  }
+  },  
+  store,
+  beforeMount: function() {
+    this.$store.commit('fetchAllPokemon');
+  },
 }
 </script>
 
