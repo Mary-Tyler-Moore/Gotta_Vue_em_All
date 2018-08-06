@@ -1,21 +1,25 @@
 <template>
-  <div id="home" class="flexCenter page">
-    <div v-if="caughtPokemon" v-for="pokemon in allPokemon" :key="pokemon.id" class="flexCenter">
-      <PokemonDisplay v-if="caughtPokemon[pokemon.id]" :img="pokemon.img" class="homePokemonDisplay">
-        <p>ID: {{ pokemon.id }}</p>
-        <p>Name: {{ pokemon.name }}</p>
-        <p>Type: {{ pokemon.type }}</p>
-        <p>Caught: {{ caughtPokemon[pokemon.id].caught }}</p>
-      </PokemonDisplay>
-    </div>
-    <div v-else>
-      You have no pokemon.  Go to the wild and catch some!
+  <div id="home" class="flexCenter flexColumn page">
+    <FilterContainer :filterTypes="filterTypes"/>
+    <div class="flexCenter wrap">
+      <div v-if="caughtPokemon" v-for="pokemon in allPokemon" :key="pokemon.id" class="flexCenter">
+        <PokemonDisplay v-if="caughtPokemon[pokemon.id]" :img="pokemon.img" class="homePokemonDisplay">
+          <p>ID: {{ pokemon.id }}</p>
+          <p>Name: {{ pokemon.name }}</p>
+          <p>Type: {{ pokemon.type }}</p>
+          <p>Caught: {{ caughtPokemon[pokemon.id].caught }}</p>
+        </PokemonDisplay>
+      </div>
+      <div v-else>
+        You have no pokemon.  Go to the wild and catch some!
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import PokemonDisplay from '../components/PokemonDisplay';
+import FilterContainer from '../components/Filter';
 import axios from 'axios';
 import { store } from '../store/store.js';
 import { url } from '../config.js';
@@ -37,11 +41,13 @@ export default {
   },
   components: {
     PokemonDisplay,
+    FilterContainer,
   },
   data() {
     return {
       text: 'Hello from Home',
       caughtPokemon: null,
+      filterTypes: ["id", "name", "caught"],
       filterType: '',
       filterOrder: 'desc',
     }
@@ -50,7 +56,7 @@ export default {
     allPokemon() {
       return this.$store.state.pokemon;
     },
-  }
+  },
 }
 
 </script>
@@ -58,8 +64,11 @@ export default {
 <style scoped>
   #home {
     background-image: url("http://images5.fanpop.com/image/photos/30700000/pokemon-pokemon-30772391-500-461.png");
-    flex-wrap: wrap;
     overflow: scroll; 
+  }
+
+  .wrap {
+    flex-wrap: wrap;
   }
 
   .homePokemonDisplay {
