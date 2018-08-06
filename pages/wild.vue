@@ -37,9 +37,10 @@
     store,
     data() {
       return {
-        index: Math.floor(Math.random() * this.$store.state.pokemon.length),
+        index: Math.floor(Math.random() * Object.keys(this.$store.state.pokemon).length),
         swapDisplay: false,
         message: null,
+        storeLength: Object.keys(this.$store.state.pokemon).length,
       }
     },
     methods: {
@@ -64,7 +65,7 @@
         this.swapDisplay = !this.swapDisplay;
       },
       updateIndex() {
-        this.index = Math.floor(Math.random() * this.$store.state.pokemon.length);
+        this.index = Math.floor(Math.random() * this.storeLength);
       },
       updateMessage(success) {
         let msg = '';

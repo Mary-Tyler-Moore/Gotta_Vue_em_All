@@ -7,10 +7,13 @@
 
 <script>
   export default {
-    props: ["img", "name"]
+    props: ["img"]
   }
 </script>
 
 <style scoped>
-
+  #pokemonDisplay {
+    padding: 10px;
+    margin: 10px;
+  }
 </style>
