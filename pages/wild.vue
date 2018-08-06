@@ -1,5 +1,8 @@
 <template>
   <div id="wild" class="flexCenter page flexColumn">
+    <div v-if="message">
+      <h2>{{ message }}</h2>
+    </div>
     <transition name="scale" mode="out-in">
       <div key="1" v-if="!swapDisplay" @click="attemptCatch" class="flexCenter flexColumn pokemonDisplay">
         <PokemonDisplay 
@@ -21,8 +24,10 @@
 </template>
 
 <script>
-  import { store } from '../store/store.js';
   import PokemonDisplay from '../components/PokemonDisplay.vue';
+  import { store } from '../store/store.js';
+  import { url } from '../config.js';
+  import axios from 'axios';
 
   export default {
     name: 'wild',
@@ -34,22 +39,49 @@
       return {
         index: Math.floor(Math.random() * this.$store.state.pokemon.length),
         swapDisplay: false,
+        message: null,
       }
     },
     methods: {
       attemptCatch() {
         let chance = Math.random() * 1;
         if (chance > 0.60) {
-          console.log('success');
+          axios
+            .put(`${url}/api/caught`, { pokemonId: this.$store.state.pokemon[this.index].id })
+            .then(() => {
+              console.log('success')
+              this.updateMessage(1);
+            })
+            .catch(err => console.error(err));
         } else {
           console.log('failed');
+          this.updateMessage();
         }
         
-        this.index = Math.floor(Math.random() * this.$store.state.pokemon.length);
         this.toggle();
       },
       toggle() {
         this.swapDisplay = !this.swapDisplay;
+      },
+      updateIndex() {
+        this.index = Math.floor(Math.random() * this.$store.state.pokemon.length);
+      },
+      updateMessage(success) {
+        let msg = '';
+        if (success) {
+          msg = 'SUCCESS!!';
+        } else {
+          msg = 'IT RAN AWAY!!';
+        }
+
+        setTimeout(() => {
+          this.message = msg;
+          setTimeout(() => { 
+            this.message = null;
+            this.toggle();
+            this.updateIndex();
+          }, 5000);
+        }, 7000);
       }
     }
   }
@@ -76,7 +108,7 @@
     border-radius: 100%;
     height: 100px;
     width: 100px;
-    animation: ballshake 1s alternate infinite;
+    animation: ballshake 0.7s 1s alternate 6;
   }
 
   .pokeball2 {
