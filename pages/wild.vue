@@ -6,8 +6,8 @@
     <transition name="scale" mode="out-in">
       <div key="1" v-if="!swapDisplay" @click="attemptCatch" class="flexCenter flexColumn pokemonDisplay">
         <PokemonDisplay 
-        :img="this.$store.state.pokemon[randomId].img"/>
-        <div>{{ this.$store.state.pokemon[randomId].name }}</div>
+        :img="allPokemon[randomIndex].img"/>
+        <div>{{ allPokemon[randomIndex].name }}</div>
       </div>
       <div key="2" v-else class="pokeball flexCenter">
         <div class="pokeball2 flexCenter">
@@ -34,26 +34,30 @@
     components: {
       PokemonDisplay,
     },
+    created() {
+      console.log(this.storeLength);
+      console.log(this.randomIndex);
+    },
     store,
     data() {
       return {
         swapDisplay: false,
         message: null,
-        pokemonIDs: Object.keys(this.$store.state.pokemon),
-        randomNum: Math.floor(Math.random() * Object.keys(this.$store.state.pokemon).length),
+        storeLength: this.$store.state.pokemon.length,
+        randomIndex: Math.floor(Math.random() * this.$store.state.pokemon.length),
       }
     },
     computed: {
-      randomId(){
-        return this.pokemonIDs[this.randomNum];
-      }
+      allPokemon() {
+        return this.$store.state.pokemon;
+      },
     },
     methods: {
       attemptCatch() {
         let chance = Math.random() * 1;
         if (chance > 0.60) {
           axios
-            .put(`${url}/api/caught`, { pokemonId: this.$store.state.pokemon[this.randomId].id })
+            .put(`${url}/api/caught`, { pokemonId: this.$store.state.pokemon[this.randomIndex].id })
             .then(() => {
               this.updateMessage(1);
             })
@@ -61,14 +65,13 @@
         } else {
           this.updateMessage();
         }
-        
         this.toggle();
       },
       toggle() {
         this.swapDisplay = !this.swapDisplay;
       },
       updateIndex() {
-        this.randomNum = Math.floor(Math.random() * Object.keys(this.$store.state.pokemon).length);
+        this.randomIndex = Math.floor(Math.random() * this.storeLength);
       },
       updateMessage(success) {
         let msg = '';

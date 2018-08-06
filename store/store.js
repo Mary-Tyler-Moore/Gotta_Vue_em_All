@@ -14,22 +14,9 @@ export const store = new Vuex.Store({
       axios
         .get(`${url}/api/pokemon`)
         .then(({ data }) => {
-          let obj = {};
-          for (let i = 0; i < data.length; i++) {
-            obj[data[i].id] = data[i];
-          }
-          state.pokemon = obj;
+          state.pokemon = data;
         })
-        .then( () => console.log(state.pokemon))
         .catch(err => console.error(err))
     },
-    fetchCaughtPokemon: () => {
-      axios
-        .get(`${url}/api/caught`)
-        .then((result) => {
-          console.log('this is the caught result', result)
-        })
-        .catch(err => console.error(err))
-    }
   }
 })

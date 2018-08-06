@@ -1,11 +1,11 @@
 <template>
   <div id="home" class="flexCenter page">
-    <div v-if="caughtPokemon" v-for="caught in caughtPokemon" :key="caught.pokemonId" class="flexCenter">
-      <PokemonDisplay :img="allPokemon[caught.pokemonId].img" class="homePokemonDisplay">
-        <p>ID: {{ allPokemon[caught.pokemonId].id }}</p>
-        <p>Name: {{ allPokemon[caught.pokemonId].name }}</p>
-        <p>Type: {{ allPokemon[caught.pokemonId].type }}</p>
-        <p>Caught: {{ caught.caught }}</p>
+    <div v-if="caughtPokemon" v-for="pokemon in allPokemon" :key="pokemon.id" class="flexCenter">
+      <PokemonDisplay v-if="caughtPokemon[pokemon.id]" :img="pokemon.img" class="homePokemonDisplay">
+        <p>ID: {{ pokemon.id }}</p>
+        <p>Name: {{ pokemon.name }}</p>
+        <p>Type: {{ pokemon.type }}</p>
+        <p>Caught: {{ caughtPokemon[pokemon.id].caught }}</p>
       </PokemonDisplay>
     </div>
     <div v-else>
@@ -27,7 +27,11 @@ export default {
     axios
       .get(`${url}/api/caught`)
       .then(({data}) => {
-        this.caughtPokemon = data;
+        let obj = {};
+        for (let i = 0; i < data.length; i++) {
+          obj[data[i].pokemonId] = data[i];
+        }
+        this.caughtPokemon = obj;
       })
       .catch(err => console.error(err));
   },
@@ -38,12 +42,14 @@ export default {
     return {
       text: 'Hello from Home',
       caughtPokemon: null,
+      filterType: '',
+      filterOrder: 'desc',
     }
   },
   computed: {
     allPokemon() {
       return this.$store.state.pokemon;
-    }
+    },
   }
 }
 
