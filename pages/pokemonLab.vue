@@ -3,27 +3,13 @@
 
     <div class="profOak flexCenter">
       <img height="450" width="192" src="https://pokemythology.net/conteudo/imgs/personagens/auxilio/p_prof.gif" alt="professor oak" />
-      <div v-if="profOakMessage" class="oakMessage">
-        <p>
-          Welcome!  I'm Professor Oak and I study Pokemon for a living.  I was hoping you can help me.
-          I spend all my time working in the lab, helping new trainers, and discovering new ways to
-          improve our relationship with all pokemon.  I was hoping you can lend me a hand by providing me
-          with information regarding new pokemon that you discovered on your journey.
-        </p>
-        <br/>
-        <p>
-          Please register any new pokemon in our latest invention, the Pokedex!
-        </p>
-      </div>
-      <div v-else class="oakMessage">
-        <p>
-          Thank you for your hard work!  I'll start my research on this new pokemon right away!
-        </p>
+      <div class="oakMessage">
+        <p>{{ this.currentMessage }}</p>
       </div>
     </div>
 
     <div class="pokedex" :style="{'backgroundImage': 'url(\'' + pokedex + '\')'}">
-        <form class="newPokemonEntry">
+        <form class="newPokemonEntry" @submit.prevent="handleSubmit">
           <input placeholder="id" />
           <input placeholder="name" />
           <input placeholder="type" />
@@ -43,24 +29,47 @@
     data() {
       return {
         pokedex,
-        profOakMessage: true,
+        message: '',
+        defaultMessage: `Welcome!  I'm Professor Oak and I study Pokemon for a living.  I was hoping you can help me.
+          I spend all my time working in the lab, helping new trainers, and discovering new ways to
+          improve our relationship with all pokemon.  I was hoping you can lend me a hand by providing me
+          with information regarding new pokemon that you discovered on your journey.
+          
+          Please register any new pokemon in our latest invention, the Pokedex!
+          `,
+        successMessage: `Thank you for your hard work!  I'll start my research on this new pokemon right away!`,
+        errorMessage: `Heyyy....I recognize that Pokemon.  Please only send new ones.`,
+        invalidEntryMessage: `Please fill out all the fields before you submit`,
+        throttleOn: false,
+      }
+    },
+    computed: {
+      currentMessage() {
+        if (this.message) {
+          return this.message;
+        }
+        return this.defaultMessage;
       }
     },
     methods: {
-      handleSubmit() {
-        if (this.profOakMessage) {
+      handleSubmit(e) {
+        console.log(e.target.children)
+        const [ id, name, type, img ] = e.target.children;
+        
+        if (!this.throttleOn) {
+          this.throttleOn = !this.throttleOn;
+
           axios
             .post(`${url}/api/pokemon`)
             .then(({ data }) => {
               console.log('created pokemon data: ', data);
 
-              //check what the data is, if it already exists, provided a failure message
-              //otherwise, 
-              this.profOakMessage = false;
-              setTimeout(() => this.profOakMessage = true, 5000);
+              console.log('if success/fail, change message')
+              this.throttleOn = !this.throttleOn;
             })
             .catch(err => console.error(err))
         }
+
       }
     }
   }
@@ -85,7 +94,8 @@
     border-radius: 0 10% 10% 10%;
     margin-top: 5%;
     padding: 10px;
-    width: 30%;
+    width: 40%;
+    white-space: pre-line;
   }
 
   .newPokemonEntry {
