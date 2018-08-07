@@ -3,7 +3,7 @@
 
     <div class="profOak flexCenter">
       <img height="450" width="192" src="https://pokemythology.net/conteudo/imgs/personagens/auxilio/p_prof.gif" alt="professor oak" />
-      <div class="oakMessage">
+      <div v-if="profOakMessage" class="oakMessage">
         <p>
           Welcome!  I'm Professor Oak and I study Pokemon for a living.  I was hoping you can help me.
           I spend all my time working in the lab, helping new trainers, and discovering new ways to
@@ -15,21 +15,54 @@
           Please register any new pokemon in our latest invention, the Pokedex!
         </p>
       </div>
+      <div v-else class="oakMessage">
+        <p>
+          Thank you for your hard work!  I'll start my research on this new pokemon right away!
+        </p>
+      </div>
     </div>
 
     <div class="pokedex" :style="{'backgroundImage': 'url(\'' + pokedex + '\')'}">
-
+      <div class="newPokemonEntry">
+        <form>
+          <input placeholder="id" />
+          <input placeholder="name" />
+          <input placeholder="type" />
+          <input placeholder="image url" />
+          <button type="submit">Send to the Professor</button>
+        </form>
+      </div>
     </div>
   </div>
 </template>
 
 
 <script>
-  import { pokedex } from '../config.js'; 
+  import axios from 'axios';
+  import { pokedex, url } from '../config.js'; 
+
   export default {
     data() {
       return {
         pokedex,
+        profOakMessage: true,
+      }
+    },
+    methods: {
+      handleSubmit() {
+        if (this.profOakMessage) {
+          axios
+            .post(`${url}/api/pokemon`)
+            .then(({ data }) => {
+              console.log('created pokemon data: ', data);
+
+              //check what the data is, if it already exists, provided a failure message
+              //otherwise, 
+              this.profOakMessage = false;
+              setTimeout(() => this.profOakMessage = true, 5000);
+            })
+            .catch(err => console.error(err))
+        }
       }
     }
   }
