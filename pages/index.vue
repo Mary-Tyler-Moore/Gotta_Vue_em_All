@@ -63,7 +63,6 @@ export default {
     filteredPokemon() {
       if (this.caughtPokemon) {
         let copy = this.caughtPokemon.slice();
-        console.log('COPY: ', copy);
         if (this.filterOrder === 'desc') {
           if (this.filterType === 'id' || this.filterType === 'caught') {
             copy.sort((a,b) => a[this.filterType] - b[this.filterType]);

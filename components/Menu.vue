@@ -6,6 +6,9 @@
     <nuxt-link class="link" to="/wild">
       Wild
     </nuxt-link>
+    <nuxt-link class="link" to="/pokemonLab">
+      PokeLab
+    </nuxt-link>
   </div>
 </template>
 
