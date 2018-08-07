@@ -18,5 +18,8 @@ export const store = new Vuex.Store({
         })
         .catch(err => console.error(err))
     },
+    updateStorePokemon: (state, payload) => {
+      state.pokemon.push(payload);
+    }
   }
 })

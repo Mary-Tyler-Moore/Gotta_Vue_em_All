@@ -23,9 +23,11 @@
 
 <script>
   import axios from 'axios';
+  import { store } from '../store/store.js';
   import { pokedex, url } from '../config.js'; 
 
   export default {
+    store,
     data() {
       return {
         pokedex,
@@ -53,21 +55,34 @@
     },
     methods: {
       handleSubmit(e) {
-        console.log(e.target.children)
         const [ id, name, type, img ] = e.target.children;
-        
-        if (!this.throttleOn) {
-          this.throttleOn = !this.throttleOn;
+        if (id.value > 0 && name.value.length > 0 && type.value.length > 0 && img.value.length > 0) {
+          if (!this.throttleOn) {
+            this.throttleOn = !this.throttleOn;
+            let option = {
+              id: Number(id.value),
+              name: name.value,
+              type: type.value,
+              img: img.value,
+            }
 
-          axios
-            .post(`${url}/api/pokemon`)
-            .then(({ data }) => {
-              console.log('created pokemon data: ', data);
-
-              console.log('if success/fail, change message')
-              this.throttleOn = !this.throttleOn;
-            })
-            .catch(err => console.error(err))
+            axios
+              .post(`${url}/api/pokemon`, option)
+              .then(({ data }) => {
+                console.log('created pokemon data: ', data);
+                if (data.id) {
+                  this.message = this.successMessage;
+                  this.$store.commit('updateStorePokemon', data);
+                  e.target.reset();
+                } else {
+                  this.message = this.errorMessage;
+                }
+                this.throttleOn = !this.throttleOn;
+              })
+              .catch(err => console.error(err))
+          }
+        } else {
+          this.message = this.invalidEntryMessage;
         }
 
       }
