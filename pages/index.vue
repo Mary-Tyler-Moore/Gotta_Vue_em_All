@@ -1,13 +1,16 @@
 <template>
   <div id="home" class="flexCenter flexColumn page">
-    <FilterContainer :filterTypes="filterTypes"/>
+    <FilterContainer 
+      :filterTypes="filterTypes" 
+      @changeFilterType="filterType = $event"
+      @changeFilterOrder="filterOrder = $event"/>
     <div class="flexCenter wrap">
-      <div v-if="caughtPokemon" v-for="pokemon in allPokemon" :key="pokemon.id" class="flexCenter">
-        <PokemonDisplay v-if="caughtPokemon[pokemon.id]" :img="pokemon.img" class="homePokemonDisplay">
+      <div v-if="filteredPokemon" v-for="pokemon in filteredPokemon" :key="pokemon.id" class="flexCenter">
+        <PokemonDisplay :img="pokemon.img" class="homePokemonDisplay">
           <p>ID: {{ pokemon.id }}</p>
           <p>Name: {{ pokemon.name }}</p>
           <p>Type: {{ pokemon.type }}</p>
-          <p>Caught: {{ caughtPokemon[pokemon.id].caught }}</p>
+          <p>Caught: {{ caughtPokemonData[pokemon.id].caught }}</p>
         </PokemonDisplay>
       </div>
       <div v-else>
@@ -35,7 +38,10 @@ export default {
         for (let i = 0; i < data.length; i++) {
           obj[data[i].pokemonId] = data[i];
         }
-        this.caughtPokemon = obj;
+        this.caughtPokemonData = obj;
+      })
+      .then(() => {
+        this.caughtPokemon = this.$store.state.pokemon.filter(poke => this.caughtPokemonData[poke.id]);
       })
       .catch(err => console.error(err));
   },
@@ -46,16 +52,36 @@ export default {
   data() {
     return {
       text: 'Hello from Home',
+      caughtPokemonData: null,
       caughtPokemon: null,
-      filterTypes: ["id", "name", "caught"],
-      filterType: '',
+      filterTypes: ["id", "name"],
+      filterType: 'name',
       filterOrder: 'desc',
     }
   },
   computed: {
-    allPokemon() {
-      return this.$store.state.pokemon;
-    },
+    filteredPokemon() {
+      if (this.caughtPokemon) {
+        let copy = this.caughtPokemon.slice();
+        console.log('COPY: ', copy);
+        if (this.filterOrder === 'desc') {
+          if (this.filterType === 'id' || this.filterType === 'caught') {
+            copy.sort((a,b) => a[this.filterType] - b[this.filterType]);
+          } else {
+            copy.sort((a,b) => a[this.filterType].charCodeAt(0) - b[this.filterType].charCodeAt(0));
+          }
+        } else {
+          if (this.filterType === 'id' || this.filterType === 'caught') {
+            copy.sort((a,b) => b[this.filterType] - a[this.filterType]);
+          } else {
+            copy.sort((a,b) => b[this.filterType].charCodeAt(0) - a[this.filterType].charCodeAt(0));
+          }
+        }
+        return copy;
+      }
+
+      return null;
+    }
   },
 }
 
