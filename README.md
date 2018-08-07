@@ -26,7 +26,8 @@ For detailed explanation on how things work, checkout the [Nuxt.js docs](https:/
 - start up mongod
 - npm run dev || yarn dev
 - npm run server || yarn server
-- OPTIONAL (seeds DB with some data):
+- (seeds DB with some data):
   - rename a "example.config.js" to "config.js" at the root directory.
-  - you'll want to replace the pokedex url with your own link/image
+  - you'll want to replace the pokedex url with your own link/image.  The default one won't fit the form perfectly
   - npm run seed || yarn seed
+- start catching pokemon!

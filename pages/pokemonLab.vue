@@ -69,7 +69,6 @@
             axios
               .post(`${url}/api/pokemon`, option)
               .then(({ data }) => {
-                console.log('created pokemon data: ', data);
                 if (data.id) {
                   this.message = this.successMessage;
                   this.$store.commit('updateStorePokemon', data);
