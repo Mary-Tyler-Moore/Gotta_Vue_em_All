@@ -23,15 +23,13 @@
     </div>
 
     <div class="pokedex" :style="{'backgroundImage': 'url(\'' + pokedex + '\')'}">
-      <div class="newPokemonEntry">
-        <form>
+        <form class="newPokemonEntry">
           <input placeholder="id" />
           <input placeholder="name" />
           <input placeholder="type" />
           <input placeholder="image url" />
           <button type="submit">Send to the Professor</button>
         </form>
-      </div>
     </div>
   </div>
 </template>
@@ -90,11 +88,40 @@
     width: 30%;
   }
 
+  .newPokemonEntry {
+    position: relative;
+    top: 180px;
+    left: 70px;
+    width: 300px;
+  }
+
+  .newPokemonEntry input {
+    font-size: 25px;
+    height: 35px;
+    width: 270px;
+    text-align: center;
+  }
+
+  .newPokemonEntry button {
+    height: 25px;
+    background-color: #BE2727;
+    border: 1px solid black;
+    border-radius: 20px;
+    box-shadow: 3px 3px 3px grey;
+    font-weight: bold;
+    margin-top: 1px;
+    margin-left: 70px;
+  }
+
+  .newPokemonEntry button:hover {
+    background-color: #F60808;
+  }
+
   .pokedex {
     background-repeat: no-repeat;
     background-size: contain;
     margin-right: 10%;
-    height: 80%;
-    width: 40%;
+    height: 600px;
+    width: 500px;
   }
 </style>
