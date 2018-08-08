@@ -1,7 +1,9 @@
 <template>
-  <div id="home" class="flexCenter flexColumn page">
+  <div id="home" class="flexColumn page">
     <FilterContainer 
-      :filterTypes="filterTypes" 
+      :filterTypes="filterTypes"
+      :filterByTypeOptions="filterByTypeOptions" 
+      @changeFilterTypeOption="filterByType = $event"
       @changeFilterType="filterType = $event"
       @changeFilterOrder="filterOrder = $event"/>
     <div v-if="filteredPokemon" class="flexCenter wrap">
@@ -34,6 +36,15 @@ export default {
     axios
       .get(`${url}/api/caught`)
       .then(({data}) => {
+        let hist = {}
+
+        for (let i = 0; i < data.length; i++) {
+          let { type } = data[i];
+          if (!hist[type]) {
+            hist[type] = true;
+            this.filterByTypeOptions.push(type);
+          }
+        }
         this.caughtPokemon = data;
       })
       .catch(err => console.error(err));
@@ -46,9 +57,11 @@ export default {
     return {
       text: 'Hello from Home',
       caughtPokemon: null,
+      filterByTypeOptions: ['all'],
       filterTypes: ["id", "name", "caught"],
       filterType: 'name',
       filterOrder: 'desc',
+      filterByType: 'all',
     }
   },
   computed: {
@@ -68,7 +81,12 @@ export default {
             copy.sort((a,b) => b[this.filterType].charCodeAt(0) - a[this.filterType].charCodeAt(0));
           }
         }
-        return copy;
+
+        if (this.filterByType !== 'all') {
+          return copy.filter(a => a.type === this.filterByType);
+        } else {
+          return copy;
+        }
       }
 
       return false;
@@ -81,6 +99,8 @@ export default {
 <style scoped>
   #home {
     background-image: url("http://images5.fanpop.com/image/photos/30700000/pokemon-pokemon-30772391-500-461.png");
+    display: flex;
+    align-items: center;
     overflow: scroll; 
   }
 
