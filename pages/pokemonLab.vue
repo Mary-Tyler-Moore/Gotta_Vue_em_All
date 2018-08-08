@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div class="pokedex" :style="{'backgroundImage': 'url(\'' + pokedex + '\')'}">
+    <div class="pokedex" :style="{'backgroundImage': 'url(\'' + process.env.POKEDEX + '\')'}">
         <form class="newPokemonEntry" @submit.prevent="handleSubmit">
           <input placeholder="id" />
           <input placeholder="name" />
@@ -24,7 +24,6 @@
 <script>
   import axios from 'axios';
   import { store } from '../store/store.js';
-  import { pokedex } from '../config.js'; 
 
   export default {
     store,
