@@ -18,9 +18,14 @@ const fetchCaughtPokemonHelper = () => {
   return PokemonCollection.find({});
 }
 
-const registerCaughtPokemonHelper = ({ pokemonId }) => {
+const registerCaughtPokemonHelper = ({ id, name, type, img }) => {
   const register = PokemonCollection.update(
-    { pokemonId },
+    { 
+      id,
+      name,
+      type,
+      img,
+    },
     { $inc: { caught: 1 }},
     { upsert: true }
   )
