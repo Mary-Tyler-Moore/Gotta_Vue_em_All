@@ -1,4 +1,4 @@
-import { images } from '../../../config';
+import { images } from '../../config';
 import { Pokemon } from '../collections';
 
 const seedData = [

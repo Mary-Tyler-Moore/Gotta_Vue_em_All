@@ -24,7 +24,7 @@
 <script>
   import axios from 'axios';
   import { store } from '../store/store.js';
-  import { pokedex, url } from '../config.js'; 
+  import { pokedex } from '../config.js'; 
 
   export default {
     store,
@@ -67,7 +67,7 @@
             }
 
             axios
-              .post(`${url}/api/pokemon`, option)
+              .post(`/api/pokemon`, option)
               .then(({ data }) => {
                 if (data.id) {
                   this.message = this.successMessage;

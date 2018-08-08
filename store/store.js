@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import { url } from '../config';
 
 Vue.use(Vuex);
 
@@ -12,7 +11,7 @@ export const store = new Vuex.Store({
   mutations: {
     fetchAllPokemon: (state) => {
       axios
-        .get(`${url}/api/pokemon`)
+        .get(`/api/pokemon`)
         .then(({ data }) => {
           state.pokemon = data;
         })

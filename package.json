@@ -8,7 +8,6 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "server": "nodemon ./backend/server/bin/entry.js",
     "seed": "node ./backend/database/bin/entry.js",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",

@@ -26,7 +26,6 @@
 <script>
   import PokemonDisplay from '../components/PokemonDisplay.vue';
   import { store } from '../store/store.js';
-  import { url } from '../config.js';
   import axios from 'axios';
 
   export default {
@@ -54,7 +53,7 @@
         if (chance > 0.60) {
           const { id, name, type, img } = this.$store.state.pokemon[this.randomIndex];
           axios
-            .put(`${url}/api/caught`, { id, name, type, img })
+            .put(`/api/caught`, { id, name, type, img })
             .then(() => {
               this.updateMessage(1);
             })

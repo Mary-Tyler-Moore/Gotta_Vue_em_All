@@ -27,14 +27,13 @@ import PokemonDisplay from '../components/PokemonDisplay';
 import FilterContainer from '../components/Filter';
 import axios from 'axios';
 import { store } from '../store/store.js';
-import { url } from '../config.js';
 
 export default {
   name: 'home',
   store,
   beforeMount: function() {
     axios
-      .get(`${url}/api/caught`)
+      .get(`/api/caught`)
       .then(({data}) => {
         let hist = {}
 
