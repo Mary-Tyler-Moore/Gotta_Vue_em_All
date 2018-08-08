@@ -1,23 +1,21 @@
 <template>
   <div id="home" class="flexCenter flexColumn page">
-    <div class="flexCenter wrap">
-      <div v-if="filteredPokemon" class="flexCenter">
-        <div v-for="pokemon in filteredPokemon" :key="pokemon.id" class="flexCenter">
-          <FilterContainer 
-            :filterTypes="filterTypes" 
-            @changeFilterType="filterType = $event"
-            @changeFilterOrder="filterOrder = $event"/>
-          <PokemonDisplay :img="pokemon.img" class="homePokemonDisplay">
-            <p>ID: {{ pokemon.id }}</p>
-            <p>Name: {{ pokemon.name }}</p>
-            <p>Type: {{ pokemon.type }}</p>
-            <p>Caught: {{ caughtPokemonData[pokemon.id].caught }}</p>
-          </PokemonDisplay>
-        </div>
+    <FilterContainer 
+      :filterTypes="filterTypes" 
+      @changeFilterType="filterType = $event"
+      @changeFilterOrder="filterOrder = $event"/>
+    <div v-if="filteredPokemon" class="flexCenter wrap">
+      <div v-for="pokemon in filteredPokemon" :key="pokemon.id" class="flexCenter">
+        <PokemonDisplay :img="pokemon.img" class="homePokemonDisplay">
+          <p>ID: {{ pokemon.id }}</p>
+          <p>Name: {{ pokemon.name }}</p>
+          <p>Type: {{ pokemon.type }}</p>
+          <p>Caught: {{ pokemon.caught }}</p>
+        </PokemonDisplay>
       </div>
-      <div v-else class="noCaught flexCenter">
-        You have no pokemon.  Go to the wild and catch some!
-      </div>
+    </div>
+    <div v-else class="noCaught flexCenter">
+      You have no pokemon.  Go to the wild and catch some!
     </div>
   </div>
 </template>
@@ -36,14 +34,7 @@ export default {
     axios
       .get(`${url}/api/caught`)
       .then(({data}) => {
-        let obj = {};
-        for (let i = 0; i < data.length; i++) {
-          obj[data[i].pokemonId] = data[i];
-        }
-        this.caughtPokemonData = obj;
-      })
-      .then(() => {
-        this.caughtPokemon = this.$store.state.pokemon.filter(poke => this.caughtPokemonData[poke.id]);
+        this.caughtPokemon = data;
       })
       .catch(err => console.error(err));
   },
@@ -54,9 +45,8 @@ export default {
   data() {
     return {
       text: 'Hello from Home',
-      caughtPokemonData: null,
       caughtPokemon: null,
-      filterTypes: ["id", "name"],
+      filterTypes: ["id", "name", "caught"],
       filterType: 'name',
       filterOrder: 'desc',
     }
@@ -96,6 +86,7 @@ export default {
 
   .wrap {
     flex-wrap: wrap;
+    overflow: scroll; 
   }
 
   .homePokemonDisplay {

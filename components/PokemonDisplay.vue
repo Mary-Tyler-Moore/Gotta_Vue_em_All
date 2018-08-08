@@ -16,4 +16,8 @@
     padding: 10px;
     margin: 10px;
   }
+
+  img {
+    filter: drop-shadow(10px 8px 7px #363434);
+  }
 </style>
