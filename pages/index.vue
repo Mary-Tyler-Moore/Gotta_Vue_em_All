@@ -1,19 +1,21 @@
 <template>
   <div id="home" class="flexCenter flexColumn page">
-    <FilterContainer 
-      :filterTypes="filterTypes" 
-      @changeFilterType="filterType = $event"
-      @changeFilterOrder="filterOrder = $event"/>
     <div class="flexCenter wrap">
-      <div v-if="filteredPokemon" v-for="pokemon in filteredPokemon" :key="pokemon.id" class="flexCenter">
-        <PokemonDisplay :img="pokemon.img" class="homePokemonDisplay">
-          <p>ID: {{ pokemon.id }}</p>
-          <p>Name: {{ pokemon.name }}</p>
-          <p>Type: {{ pokemon.type }}</p>
-          <p>Caught: {{ caughtPokemonData[pokemon.id].caught }}</p>
-        </PokemonDisplay>
+      <div v-if="filteredPokemon" class="flexCenter">
+        <div v-for="pokemon in filteredPokemon" :key="pokemon.id" class="flexCenter">
+          <FilterContainer 
+            :filterTypes="filterTypes" 
+            @changeFilterType="filterType = $event"
+            @changeFilterOrder="filterOrder = $event"/>
+          <PokemonDisplay :img="pokemon.img" class="homePokemonDisplay">
+            <p>ID: {{ pokemon.id }}</p>
+            <p>Name: {{ pokemon.name }}</p>
+            <p>Type: {{ pokemon.type }}</p>
+            <p>Caught: {{ caughtPokemonData[pokemon.id].caught }}</p>
+          </PokemonDisplay>
+        </div>
       </div>
-      <div v-else>
+      <div v-else class="noCaught flexCenter">
         You have no pokemon.  Go to the wild and catch some!
       </div>
     </div>
@@ -61,7 +63,7 @@ export default {
   },
   computed: {
     filteredPokemon() {
-      if (this.caughtPokemon) {
+      if (this.caughtPokemon && this.caughtPokemon.length > 0) {
         let copy = this.caughtPokemon.slice();
         if (this.filterOrder === 'desc') {
           if (this.filterType === 'id' || this.filterType === 'caught') {
@@ -79,7 +81,7 @@ export default {
         return copy;
       }
 
-      return null;
+      return false;
     }
   },
 }
@@ -99,5 +101,14 @@ export default {
   .homePokemonDisplay {
     border: 1px solid black;
     background-color: white;
+  }
+
+  .noCaught {
+    background-color: white;
+    font-size: 2em;
+    font-weight: bold;
+    height: 20vh;
+    width: 50vh;
+    text-align: center;
   }
 </style>
