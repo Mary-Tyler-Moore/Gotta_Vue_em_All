@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div class="pokedex" :style="{'backgroundImage': 'url(\'' + process.env.POKEDEX + '\')'}">
+    <div class="pokedex" :style="{'backgroundImage': 'url(\'' + pokedex + '\')'}">
         <form class="newPokemonEntry" @submit.prevent="handleSubmit">
           <input placeholder="id" />
           <input placeholder="name" />
@@ -29,7 +29,7 @@
     store,
     data() {
       return {
-        pokedex,
+        pokedex: process.env.POKEDEX,
         message: '',
         defaultMessage: `Welcome!  I'm Professor Oak and I study Pokemon for a living.  I was hoping you can help me.
           I spend all my time working in the lab, helping new trainers, and discovering new ways to
