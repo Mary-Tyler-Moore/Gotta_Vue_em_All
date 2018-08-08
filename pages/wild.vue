@@ -52,8 +52,9 @@
       attemptCatch() {
         let chance = Math.random() * 1;
         if (chance > 0.60) {
+          const { id, name, type, img } = this.$store.state.pokemon[this.randomIndex];
           axios
-            .put(`${url}/api/caught`, { pokemonId: this.$store.state.pokemon[this.randomIndex].id })
+            .put(`${url}/api/caught`, { id, name, type, img })
             .then(() => {
               this.updateMessage(1);
             })
@@ -83,7 +84,7 @@
             this.message = null;
             this.toggle();
             this.updateIndex();
-          }, 5000);
+          }, 3000);
         }, 7000);
       }
     }
@@ -112,6 +113,7 @@
     height: 100px;
     width: 100px;
     animation: ballshake 0.7s 1s alternate 6;
+    filter: drop-shadow(0px 10px 7px #363434);
   }
 
   .pokeball2 {

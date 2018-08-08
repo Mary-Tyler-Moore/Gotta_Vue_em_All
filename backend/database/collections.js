@@ -11,8 +11,11 @@ const pokemonSchema = new mongoose.Schema({
 const Pokemon = mongoose.model('Pokemon', pokemonSchema);
 
 const pokemonCollectionSchema = new mongoose.Schema({
-  pokemonId: Number,    //an object that contains key (pokemon ID) and value (# caught)
-  caught: Number
+  caught: Number,
+  id: Number,
+  name: String,
+  type: String,
+  img: String,
 })
 
 const PokemonCollection = mongoose.model('pokemoncollection', pokemonCollectionSchema);

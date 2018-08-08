@@ -1,8 +1,12 @@
 <template>
   <div id="filterContainer" class="flexCenter">
     <select @change="changeFilterType">
-      <option selected disabled>type</option>
+      <option selected disabled>filter</option>
       <option v-for="type in filterTypes" :key="type" :value="type">{{ type }}</option>
+    </select>
+    <select @change="changeFilterTypeOption">
+      <option selected disabled>type</option>
+      <option v-for="type in filterByTypeOptions" :key="type" :value="type">{{ type }}</option>
     </select>
     <select @change="changeFilterOrder">
       <option selected disabled>order</option>
@@ -14,16 +18,16 @@
 
 <script>
   export default {
-    props: ["filterTypes"],
+    props: ["filterTypes", "filterByTypeOptions"],
     methods: {
       changeFilterType(e) {
-        console.log(e.target.value)
         this.$emit('changeFilterType', e.target.value);
       },
       changeFilterOrder(e) {
-
-        console.log(e.target.value)
         this.$emit('changeFilterOrder', e.target.value);
+      },
+      changeFilterTypeOption(e) {
+        this.$emit('changeFilterTypeOption', e.target.value);
       }
     }
   }
@@ -40,6 +44,8 @@
   #filterContainer select {
     margin-left: 5%;
     margin-right: 5%;
+    font-size: 1em;
+    height: 60%;
     width: 20%;
   }
 </style>

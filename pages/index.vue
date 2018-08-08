@@ -1,21 +1,23 @@
 <template>
-  <div id="home" class="flexCenter flexColumn page">
+  <div id="home" class="flexColumn page">
     <FilterContainer 
-      :filterTypes="filterTypes" 
+      :filterTypes="filterTypes"
+      :filterByTypeOptions="filterByTypeOptions" 
+      @changeFilterTypeOption="filterByType = $event"
       @changeFilterType="filterType = $event"
       @changeFilterOrder="filterOrder = $event"/>
-    <div class="flexCenter wrap">
-      <div v-if="filteredPokemon" v-for="pokemon in filteredPokemon" :key="pokemon.id" class="flexCenter">
+    <div v-if="filteredPokemon" class="flexCenter wrap">
+      <div v-for="pokemon in filteredPokemon" :key="pokemon.id" class="flexCenter">
         <PokemonDisplay :img="pokemon.img" class="homePokemonDisplay">
           <p>ID: {{ pokemon.id }}</p>
           <p>Name: {{ pokemon.name }}</p>
           <p>Type: {{ pokemon.type }}</p>
-          <p>Caught: {{ caughtPokemonData[pokemon.id].caught }}</p>
+          <p>Caught: {{ pokemon.caught }}</p>
         </PokemonDisplay>
       </div>
-      <div v-else>
-        You have no pokemon.  Go to the wild and catch some!
-      </div>
+    </div>
+    <div v-else class="noCaught flexCenter">
+      You have no pokemon.  Go to the wild and catch some!
     </div>
   </div>
 </template>
@@ -34,14 +36,16 @@ export default {
     axios
       .get(`${url}/api/caught`)
       .then(({data}) => {
-        let obj = {};
+        let hist = {}
+
         for (let i = 0; i < data.length; i++) {
-          obj[data[i].pokemonId] = data[i];
+          let { type } = data[i];
+          if (!hist[type]) {
+            hist[type] = true;
+            this.filterByTypeOptions.push(type);
+          }
         }
-        this.caughtPokemonData = obj;
-      })
-      .then(() => {
-        this.caughtPokemon = this.$store.state.pokemon.filter(poke => this.caughtPokemonData[poke.id]);
+        this.caughtPokemon = data;
       })
       .catch(err => console.error(err));
   },
@@ -52,16 +56,17 @@ export default {
   data() {
     return {
       text: 'Hello from Home',
-      caughtPokemonData: null,
       caughtPokemon: null,
-      filterTypes: ["id", "name"],
+      filterByTypeOptions: ['all'],
+      filterTypes: ["id", "name", "caught"],
       filterType: 'name',
       filterOrder: 'desc',
+      filterByType: 'all',
     }
   },
   computed: {
     filteredPokemon() {
-      if (this.caughtPokemon) {
+      if (this.caughtPokemon && this.caughtPokemon.length > 0) {
         let copy = this.caughtPokemon.slice();
         if (this.filterOrder === 'desc') {
           if (this.filterType === 'id' || this.filterType === 'caught') {
@@ -76,10 +81,15 @@ export default {
             copy.sort((a,b) => b[this.filterType].charCodeAt(0) - a[this.filterType].charCodeAt(0));
           }
         }
-        return copy;
+
+        if (this.filterByType !== 'all') {
+          return copy.filter(a => a.type === this.filterByType);
+        } else {
+          return copy;
+        }
       }
 
-      return null;
+      return false;
     }
   },
 }
@@ -89,15 +99,27 @@ export default {
 <style scoped>
   #home {
     background-image: url("http://images5.fanpop.com/image/photos/30700000/pokemon-pokemon-30772391-500-461.png");
+    display: flex;
+    align-items: center;
     overflow: scroll; 
   }
 
   .wrap {
     flex-wrap: wrap;
+    overflow: scroll; 
   }
 
   .homePokemonDisplay {
     border: 1px solid black;
     background-color: white;
+  }
+
+  .noCaught {
+    background-color: white;
+    font-size: 2em;
+    font-weight: bold;
+    height: 20vh;
+    width: 50vh;
+    text-align: center;
   }
 </style>
