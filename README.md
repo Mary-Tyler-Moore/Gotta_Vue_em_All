@@ -5,6 +5,7 @@
 - catch random pokemon in the Wild
 - view caught pokemon and filter at home
 - "discover" new pokemon in the Pokemon Lab
+- styled with Vue transition and raw CSS
 
 #HOW TO START THIS APP
 - npm install || yarn
