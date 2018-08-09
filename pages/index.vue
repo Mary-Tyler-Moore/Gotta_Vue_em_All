@@ -1,5 +1,9 @@
 <template>
   <div id="home" class="flexColumn page">
+    <div class="totalCaught" :style="{ 'color': 'hsl(' + hue + ', 100%, 50%)' }">
+      <h3>Total Caught By Visitors</h3>
+      <p>{{ totalCaught }}</p>
+    </div>
     <FilterContainer 
       :filterTypes="filterTypes"
       :filterByTypeOptions="filterByTypeOptions" 
@@ -38,15 +42,19 @@ export default {
         let hist = {}
 
         for (let i = 0; i < data.length; i++) {
-          let { type } = data[i];
+          let { type, caught } = data[i];
           if (!hist[type]) {
             hist[type] = true;
             this.filterByTypeOptions.push(type);
           }
+          this.totalCaught += caught;
         }
         this.caughtPokemon = data;
       })
       .catch(err => console.error(err));
+  },
+  mounted: function() {
+    setInterval(() => this.hue += 5, 500);
   },
   components: {
     PokemonDisplay,
@@ -61,6 +69,9 @@ export default {
       filterType: 'name',
       filterOrder: 'desc',
       filterByType: 'all',
+      totalCaught: 0,
+      currentColor: 'black',
+      hue: 0,
     }
   },
   computed: {
@@ -120,5 +131,17 @@ export default {
     height: 20vh;
     width: 50vh;
     text-align: center;
+  }
+
+  .totalCaught {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px;
   }
 </style>
