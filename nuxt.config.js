@@ -10,7 +10,7 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'Pokemon catching app using Vue' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
   /*
