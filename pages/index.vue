@@ -142,6 +142,7 @@ export default {
     font-weight: bold;
     text-align: center;
     margin-top: 10px;
+    min-height: 60px;
     padding: 10px;
   }
 </style>

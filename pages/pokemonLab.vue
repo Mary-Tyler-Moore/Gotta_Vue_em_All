@@ -144,7 +144,7 @@
     background-repeat: no-repeat;
     background-size: contain;
     margin-right: 10%;
-    height: 600px;
-    width: 500px;
+    min-height: 600px;
+    min-width: 500px;
   }
 </style>
