@@ -45,7 +45,6 @@
     margin-left: 5%;
     margin-right: 5%;
     font-size: 1em;
-    height: 60%;
     width: 20%;
   }
 </style>
