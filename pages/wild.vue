@@ -40,6 +40,7 @@
         message: null,
         storeLength: this.$store.state.pokemon.length,
         randomIndex: Math.floor(Math.random() * this.$store.state.pokemon.length),
+        throttle: false,
       }
     },
     computed: {
@@ -49,19 +50,23 @@
     },
     methods: {
       attemptCatch() {
-        let chance = Math.random() * 1;
-        if (chance > 0.60) {
+        if (!this.throttle) {
+          this.throttle = !this.throttle;
+          this.toggle();
+          let chance = Math.random() * 1;
           const { id, name, type, img } = this.$store.state.pokemon[this.randomIndex];
-          axios
-            .put(`/api/caught`, { id, name, type, img })
-            .then(() => {
-              this.updateMessage(1);
-            })
-            .catch(err => console.error(err));
-        } else {
-          this.updateMessage();
+          if (chance > 0.60 && id && name && type && img) {
+            axios
+              .put(`/api/caught`, { id, name, type, img })
+              .then(() => {
+                this.updateMessage(1);
+              })
+              .catch(err => console.error(err));
+          } else {
+            this.updateMessage();
+          }
+          this.throttle = !this.throttle;
         }
-        this.toggle();
       },
       toggle() {
         this.swapDisplay = !this.swapDisplay;
