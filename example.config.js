@@ -10,6 +10,4 @@ const images = {
   blastoise: process.env.BLASTOISE || "https://upload.wikimedia.org/wikipedia/en/2/28/Pok%C3%A9mon_Bulbasaur_art.png",
 }
 
-const pokedex = process.env.POKEDEX || "https://data.pixiz.com/output/user/frame/preview/400x400/2/3/0/0/2200032_50ba6.jpg";
-
-export { images, pokedex };
+export default images;
