@@ -24,13 +24,12 @@
 <script>
   import axios from 'axios';
   import { store } from '../store/store.js';
-  import { pokedex, url } from '../config.js'; 
 
   export default {
     store,
     data() {
       return {
-        pokedex,
+        pokedex: process.env.POKEDEX,
         message: '',
         defaultMessage: `Welcome!  I'm Professor Oak and I study Pokemon for a living.  I was hoping you can help me.
           I spend all my time working in the lab, helping new trainers, and discovering new ways to
@@ -67,7 +66,7 @@
             }
 
             axios
-              .post(`${url}/api/pokemon`, option)
+              .post(`/api/pokemon`, option)
               .then(({ data }) => {
                 if (data.id) {
                   this.message = this.successMessage;
@@ -145,7 +144,7 @@
     background-repeat: no-repeat;
     background-size: contain;
     margin-right: 10%;
-    height: 600px;
-    width: 500px;
+    min-height: 600px;
+    min-width: 500px;
   }
 </style>

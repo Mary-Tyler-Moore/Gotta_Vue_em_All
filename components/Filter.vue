@@ -45,7 +45,7 @@
     margin-left: 5%;
     margin-right: 5%;
     font-size: 1em;
-    height: 60%;
+    min-height: 25px;
     width: 20%;
   }
 </style>

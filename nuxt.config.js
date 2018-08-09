@@ -21,9 +21,6 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    /*
-    ** Run ESLint on save
-    */
     extend (config, { isDev, isClient }) {
       if (isDev && isClient) {
         config.module.rules.push({
@@ -34,6 +31,13 @@ module.exports = {
         })
       }
     }
+  },
+  serverMiddleware: [
+    // API middleware
+    '~/api/index.js'
+  ],
+  env: {
+    POKEDEX: process.env.POKEDEX || "https://data.pixiz.com/output/user/frame/preview/400x400/2/3/0/0/2200032_50ba6.jpg", 
   }
 }
 

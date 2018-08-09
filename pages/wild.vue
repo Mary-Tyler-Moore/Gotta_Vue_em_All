@@ -9,12 +9,10 @@
         :img="allPokemon[randomIndex].img"/>
         <div>{{ allPokemon[randomIndex].name }}</div>
       </div>
-      <div key="2" v-else class="pokeball flexCenter">
-        <div class="pokeball2 flexCenter">
-          <div class="pokeLine flexCenter">
-            <div class="pokeButton flexCenter">
-              <div class="innerPokeButton">
-              </div>
+      <div key="2" v-else class="pokeball">
+        <div class="pokeTop flexCenter">
+          <div class="pokeButton flexCenter">
+            <div class="innerPokeButton">
             </div>
           </div>
         </div>
@@ -26,7 +24,6 @@
 <script>
   import PokemonDisplay from '../components/PokemonDisplay.vue';
   import { store } from '../store/store.js';
-  import { url } from '../config.js';
   import axios from 'axios';
 
   export default {
@@ -41,6 +38,7 @@
         message: null,
         storeLength: this.$store.state.pokemon.length,
         randomIndex: Math.floor(Math.random() * this.$store.state.pokemon.length),
+        throttle: false,
       }
     },
     computed: {
@@ -50,19 +48,23 @@
     },
     methods: {
       attemptCatch() {
-        let chance = Math.random() * 1;
-        if (chance > 0.60) {
+        if (!this.throttle) {
+          this.throttle = !this.throttle;
+          this.toggle();
+          let chance = Math.random() * 1;
           const { id, name, type, img } = this.$store.state.pokemon[this.randomIndex];
-          axios
-            .put(`${url}/api/caught`, { id, name, type, img })
-            .then(() => {
-              this.updateMessage(1);
-            })
-            .catch(err => console.error(err));
-        } else {
-          this.updateMessage();
+          if (chance > 0.60 && id && name && type && img) {
+            axios
+              .put(`/api/caught`, { id, name, type, img })
+              .then(() => {
+                this.updateMessage(1);
+              })
+              .catch(err => console.error(err));
+          } else {
+            this.updateMessage();
+          }
+          this.throttle = !this.throttle;
         }
-        this.toggle();
       },
       toggle() {
         this.swapDisplay = !this.swapDisplay;
@@ -114,36 +116,31 @@
     width: 100px;
     animation: ballshake 0.7s 1s alternate 6;
     filter: drop-shadow(0px 10px 7px #363434);
+    overflow-y: hidden;
+    overflow-x: hidden;
   }
 
-  .pokeball2 {
-    background-color: red;
-    border-radius: 100%;
+  .pokeTop {
+    transform: rotate(-10deg);
+    background: linear-gradient( #e53935 0%, #e53935 45%, #000000 45%, #000000 55%, #fff 55%, #fff 100%);
+    border-radius: 100% 100% 0 0;
     height: 100%;
     width: 100%;
   }
 
-  .pokeLine {
-    background-color: white;
-    border: 1px solid black;
-    width: 100%;
-    height: 15%;
-    transform:rotate(-10deg); 
-  }
-
   .pokeButton {
-    border: 1px solid black;
+    border: 5px solid black;
     background-color: white;
     border-radius: 100%;
-    height: 220%;
-    width: 30%;
+    height: 33%;
+    width: 31%;
   }
 
   .innerPokeButton {
     border: 1px solid black;
     border-radius: 100%;
-    height: 90%;
-    width: 90%;
+    height: 85%;
+    width: 85%;
   }
 
   @keyframes ballshake {

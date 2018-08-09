@@ -15,6 +15,7 @@
 <style scoped>
 #pokemonMenu {
   background-color: green;
+  justify-content: space-evenly;
   height: 5vh;
   width: 100%;
 }
@@ -25,6 +26,7 @@
   justify-content: center;
   padding: 5px;
   text-decoration: none;
+  text-shadow: 2px 2px black;
 }
 
 #pokemonMenu,
