@@ -9,12 +9,10 @@
         :img="allPokemon[randomIndex].img"/>
         <div>{{ allPokemon[randomIndex].name }}</div>
       </div>
-      <div key="2" v-else class="pokeball flexCenter">
-        <div class="pokeball2 flexCenter">
-          <div class="pokeLine flexCenter">
-            <div class="pokeButton flexCenter">
-              <div class="innerPokeButton">
-              </div>
+      <div key="2" v-else class="pokeball">
+        <div class="pokeTop flexCenter">
+          <div class="pokeButton flexCenter">
+            <div class="innerPokeButton">
             </div>
           </div>
         </div>
@@ -118,36 +116,31 @@
     width: 100px;
     animation: ballshake 0.7s 1s alternate 6;
     filter: drop-shadow(0px 10px 7px #363434);
+    overflow-y: hidden;
+    overflow-x: hidden;
   }
 
-  .pokeball2 {
-    background-color: red;
-    border-radius: 100%;
+  .pokeTop {
+    transform: rotate(-10deg);
+    background: linear-gradient( #e53935 0%, #e53935 45%, #000000 45%, #000000 55%, #fff 55%, #fff 100%);
+    border-radius: 100% 100% 0 0;
     height: 100%;
     width: 100%;
   }
 
-  .pokeLine {
-    background-color: white;
-    border: 1px solid black;
-    width: 100%;
-    height: 15%;
-    transform:rotate(-10deg); 
-  }
-
   .pokeButton {
-    border: 1px solid black;
+    border: 5px solid black;
     background-color: white;
     border-radius: 100%;
-    height: 220%;
-    width: 30%;
+    height: 33%;
+    width: 31%;
   }
 
   .innerPokeButton {
     border: 1px solid black;
     border-radius: 100%;
-    height: 90%;
-    width: 90%;
+    height: 85%;
+    width: 85%;
   }
 
   @keyframes ballshake {
